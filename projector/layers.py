@@ -109,7 +109,9 @@ def channel_wise_fc_layer(bottom, name, bias=True):
                 "W",
                 shape=[n_feat_map,width*height, width*height], # n_feat_map * d * d_filter
                 initializer=tf.truncated_normal_initializer(0., 0.005))
-        output = tf.batch_matmul(input_transpose, W)  # n_feat_map * batch * d_filter
+        
+#        output = tf.batch_matmul(input_transpose, W)  # n_feat_map * batch * d_filter
+        output = tf.matmul(input_transpose, W)  # modified by zhantao deng, as batch_matmul has been removed
 
         if bias == True:
             b = tf.get_variable(

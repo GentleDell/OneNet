@@ -4,7 +4,6 @@ import scipy as sp
 import scipy.io
 import scipy.misc
 import scipy.ndimage
-import layers_nearest_2 as layers
 import load_celeb as load_dataset
 import os
 import os.path
@@ -15,6 +14,8 @@ from smooth_stream import SmoothStream
 from noise import add_noise
 import sys
 
+import layers  # modified by zhantao deng, to use pretrained model
+#import layers_nearest_2 as layers
 
 def build_classifier_model_imagespace(image, is_train, n_reference, reuse=None):
     """
@@ -370,7 +371,7 @@ if __name__ == '__main__':
             seed = np.random.randint(1e8)
             instance_size = batch_size - n_reference
             if instance_size < 1:
-                print 'ERROR: batch_size < n_reference + 1'
+                print('ERROR: batch_size < n_reference + 1')
             train_proc = Process(target=read_file_cpu, args=(trainset, train_queue, instance_size, num_prepare, seed))
             train_proc.daemon = True
             train_proc.start()
@@ -386,10 +387,10 @@ if __name__ == '__main__':
 
     trainset = load_dataset.load_trainset_path_list()
     total_train = len(trainset)
-    print 'total train = %d' % (total_train)
+    print('total train = %d' % (total_train))
 
 
-    print "create reference batch..."
+    print("create reference batch...")
     n_thread = 1
     num_prepare = 1
     reference_queue = Queue(num_prepare)
@@ -407,7 +408,7 @@ if __name__ == '__main__':
     # save reference to a mat file
     ref_file = '%s/ref_batch_%d.mat' % (base_folder, n_reference)
     sp.io.savemat(ref_file, {'ref_batch': ref_batch})
-    print 'ref_batch saved.'
+    print ('ref_batch saved.')
 
     def np_combine_batch(inst,ref):
         out = np.concatenate([inst,ref], axis=0)
@@ -416,11 +417,11 @@ if __name__ == '__main__':
         return batch[0:inst_size]
 
 
-    print "loading data..."
+    print ("loading data...")
 
     n_thread = 16
     num_prepare = 20
-    print 'total train = %d' % (total_train)
+    print ('total train = %d' % (total_train))
     train_queue = Queue(num_prepare+1)
     train_procs = []
     create_train_procs(trainset, train_queue, n_thread, num_prepare, train_procs)
@@ -484,7 +485,7 @@ if __name__ == '__main__':
     if update_ops:
         updates = tf.group(*update_ops)
     else:
-        print 'something is wrong!'
+        print ('something is wrong!')
     
     # if we are using virtual batch normalization, we do not need to calculate the population mean and variance
     if n_reference > 0:
@@ -649,16 +650,16 @@ if __name__ == '__main__':
         })
 
 
-    print 'reload previously trained model'
+    print ('reload previously trained model')
     if use_pretrain == True:
-        print 'reloading %s...' % pretrained_model_file
+        print ('reloading %s...' % pretrained_model_file)
         saver.restore( sess, pretrained_model_file )
 
     if use_tensorboard > 0:
         # op to write logs to Tensorboard
         summary_writer = tf.summary.FileWriter(logs_path, graph=tf.get_default_graph())
-        print "Run the command line:\n --> tensorboard --logdir=%s\n" %  logs_base
-        print "Then open http://0.0.0.0:6006/ into your web browser"
+        print ("Run the command line:\n --> tensorboard --logdir=%s\n" %  logs_base)
+        print ("Then open http://0.0.0.0:6006/ into your web browser")
 
 
     # continue the iteration number
@@ -670,7 +671,7 @@ if __name__ == '__main__':
     start_epoch = iters // (total_train // batch_size)
 
 
-    print 'start training'
+    print ('start training')
     start_time = timeit.default_timer()
 
     iters_in_epoch = total_train // batch_size
@@ -695,7 +696,7 @@ if __name__ == '__main__':
     acc_img_val = 0
 
 
-    print 'alternative training starts....'
+    print ('alternative training starts....')
 
     while True:
         inst_batch, inst_noisy_batch = train_queue.get()
@@ -765,12 +766,12 @@ if __name__ == '__main__':
             acc_latent_avg.insert(acc_latent_val)
             acc_img_avg.insert(acc_img_val)
 
-        print "Iter %d (%.2fm): l_gen=%.3e  l_proj=%.3e l_recon=%.3e (%.3e) l_recon_z=%.3e (%.3e) l_adv_gen=%.3e l_dis=%.3e (%.3e) acc_img=%.3e (%.3e) acc_latent=%.3e (%.3e) lrp=%.3e lrd=%.3e qsize=%d" % (
+        print ("Iter %d (%.2fm): l_gen=%.3e  l_proj=%.3e l_recon=%.3e (%.3e) l_recon_z=%.3e (%.3e) l_adv_gen=%.3e l_dis=%.3e (%.3e) acc_img=%.3e (%.3e) acc_latent=%.3e (%.3e) lrp=%.3e lrd=%.3e qsize=%d" % (
                 iters, (timeit.default_timer()-start_time)/60., loss_G_val, loss_proj_val, loss_recon_val,
                 loss_recon_avg.get_moving_avg(), loss_recon_z_val, loss_recon_z_avg.get_moving_avg(), loss_adv_G_val, loss_D_val, loss_dis_avg.get_moving_avg(),
                 acc_img_val, acc_img_avg.get_moving_avg(),
                 acc_latent_val, acc_latent_avg.get_moving_avg(),
-                learning_rate_val_proj, learning_rate_val_dis, train_queue.qsize())
+                learning_rate_val_proj, learning_rate_val_dis, train_queue.qsize()))
 
 
         # reset update_D_left and update_G_left when they are zeros

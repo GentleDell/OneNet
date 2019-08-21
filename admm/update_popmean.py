@@ -28,8 +28,8 @@ img_size = (64,64,3)
 
 # filename of the trained model. If using virtual batch normalization, 
 use_latent = 1  # if lambda_latent > 0
-iter = 49999
-pretrained_folder = os.path.expanduser("../projector/model/imsize64_ratio0.010000_dis0.005000_latent0.000100_img0.001000_de1.000000_derate1.000000_dp1_gd1_softpos0.850000_wdcy_0.000000_seed0")
+iter = 9999
+pretrained_folder = os.path.expanduser("../model/celeb-1m/imsize64_ratio0.010000_dis0.005000_latent0.000100_img0.001000_de1.000000_derate1.000000_dp1_gd1_softpos0.850000_wdcy_0.000001_seed0")
 pretrained_model_file = '%s/model/model_iter-%d' % (pretrained_folder, iter)
 
 # the filename of saved the reference batch
@@ -50,12 +50,12 @@ if use_latent > 0:
 
 
 # We create a session to use the graph and restore the variables
-print 'loading model...'
+print('loading model...')
 sess = tf.Session()
 sess.run(tf.global_variables_initializer())
 saver = tf.train.Saver(max_to_keep=100)
 saver.restore(sess, pretrained_model_file)
-print 'finished reload.'
+print('finished reload.')
 
 
 # updating popmean for faster evaluation

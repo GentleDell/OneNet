@@ -46,9 +46,9 @@ def solve(y, A_fun, AT_fun, denoiser, reshape_img_fun, base_folder, show_img_pro
     def compute_p_inv_A(b, z0):
         (z,info) = sp.sparse.linalg.cgs(A_cgs, vec(b), x0=vec(z0), tol=1e-2)
         if info > 0:
-            print 'cgs convergence to tolerance not achieved'
+            print ('cgs convergence to tolerance not achieved')
         elif info <0:
-            print 'cgs gets illegal input or breakdown'
+            print ('cgs gets illegal input or breakdown')
         z = np.reshape(z, x_shape, order='F')
         return z
 
@@ -62,9 +62,9 @@ def solve(y, A_fun, AT_fun, denoiser, reshape_img_fun, base_folder, show_img_pro
     def compute_init(b, z0):
         (z,info) = sp.sparse.linalg.cgs(A_cgs_init, vec(b), x0=vec(z0), tol=1e-2)
         if info > 0:
-            print 'cgs convergence to tolerance not achieved'
+            print ('cgs convergence to tolerance not achieved')
         elif info <0:
-            print 'cgs gets illegal input or breakdown'
+            print ('cgs gets illegal input or breakdown')
         z = np.reshape(z, x_shape, order='F')
         return z
 
@@ -112,7 +112,7 @@ def solve(y, A_fun, AT_fun, denoiser, reshape_img_fun, base_folder, show_img_pro
         x_z = np.sqrt(np.mean(np.square(x-z)))
         u_norm = np.sqrt(np.mean(np.square(u)))
 
-        print 'iter = %d: obj_ls = %.3e  |x-z| = %.3e  u_norm = %.3e' % (iter, obj_ls, x_z, u_norm)
+        print ('iter = %d: obj_ls = %.3e  |x-z| = %.3e  u_norm = %.3e' % (iter, obj_ls, x_z, u_norm))
 
 
         obj_lss[iter] = obj_ls
