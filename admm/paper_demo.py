@@ -308,7 +308,7 @@ for idx in idxs :
         bicubic_img = bicubic_img.astype(float) / 255.0
         l2_dis = np.mean(np.square(ori_img[0] - bicubic_img))
 
-        print 'bicubic err = %f' % (l2_dis)
+        print('bicubic err = %f' % (l2_dis))
 
 
         info = {'ori_img': ori_img, 'y': y, 'bicubic': bicubic_img, 'noise': noise, 'resize_ratio': resize_ratio,
@@ -428,20 +428,20 @@ for idx in idxs :
     # load the dataset
 
 
-    print 'loading data...'
+    print('loading data...')
     testset_filelist = load_data.load_testset_path_list()
     total_test = len(testset_filelist)
-    print 'total test = %d' % total_test
+    print('total test = %d' % total_test)
 
     # We create a session to use the graph and restore the variables
     if run_ours:
-        print 'loading model...'
+        print('loading model...')
         sess = tf.Session()
         sess.run(tf.global_variables_initializer())
         saver = tf.train.Saver(max_to_keep=100)
         saver.restore(sess, pretrained_model_file)
         #print(sess.run(tf.global_variables()))
-        print 'finished reload.'
+        print('finished reload.')
 
     # define denoiser
     def denoise(x):
@@ -493,7 +493,7 @@ for idx in idxs :
 
     ##############################################################################################
     ##### super resolution
-    print 'super resolution'
+    print('super resolution')
 
     #set parameters
     alpha = 0.5 # 1.0
@@ -513,7 +513,7 @@ for idx in idxs :
 
     #################################################################################################
     ##### compressive sensing
-    print 'compressive sensing'
+    print('compressive sensing')
 
     #set parameters
     alpha = 0.3
@@ -534,7 +534,7 @@ for idx in idxs :
     ############################################################################################
     #### denoising
 
-    print 'denoising'
+    print('denoising')
 
     # set parameter
     alpha = 0.3
@@ -556,7 +556,7 @@ for idx in idxs :
     ##########################################################################################
     ## inpaint block
 
-    print 'inpaint block'
+    print('inpaint block')
 
     # set parameter
     alpha = 0.3
@@ -577,7 +577,7 @@ for idx in idxs :
     
     ############################################################################################
     ### inpaint center
-    print 'inpaint center'
+    print('inpaint center')
    
     alpha = 0.2 
     max_iter = 300
