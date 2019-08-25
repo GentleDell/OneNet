@@ -8,7 +8,9 @@ import scipy.io
 import math
 import load_celeb as load_data
 import os
+import cv2
 import timeit
+import imageio
 import matplotlib.pyplot as plt
 import add_noise
 import solver_paper as solver
@@ -22,11 +24,11 @@ def save_results(folder, infos, x, z, u):
     filename = '%s/infos.mat' % folder
     sp.io.savemat(filename, infos)
     filename = '%s/x.jpg' % folder
-    sp.misc.imsave(filename, sp.misc.imresize((reshape_img(np.clip(x, 0.0, 1.0))*255).astype(np.uint8), 4.0, interp='nearest'))
+    cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(x, 0.0, 1.0))*255).astype(np.uint8)))
     filename = '%s/z.jpg' % folder
-    sp.misc.imsave(filename, sp.misc.imresize((reshape_img(np.clip(z, 0.0, 1.0))*255).astype(np.uint8), 4.0, interp='nearest'))
+    cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(z, 0.0, 1.0))*255).astype(np.uint8)))
     filename = '%s/u.jpg' % folder
-    sp.misc.imsave(filename, sp.misc.imresize((reshape_img(np.clip(u, 0.0, 1.0))*255).astype(np.uint8), 4.0, interp='nearest'))
+    cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(u, 0.0, 1.0))*255).astype(np.uint8)))
 
 
 # index of test images
@@ -54,7 +56,7 @@ for idx in idxs :
     run_l1 = False            # whether the run the traditional wavelet sparsity method
 
     def load_image(filepath):
-        img = sp.misc.imread(filepath)
+        img = imageio.imread(filepath)
         img = sp.misc.imresize(img, [64,64]).astype(float) / 255.0
         if len(img.shape) < 3:
             img = np.tile(img, [1,1,3])
@@ -114,9 +116,9 @@ for idx in idxs :
         filename = '%s/settings.mat' % base_folder
         sp.io.savemat(filename, info)
         filename = '%s/y.jpg' % base_folder
-        sp.misc.imsave(filename, sp.misc.imresize((reshape_img(np.clip(y, 0.0, 1.0))*255).astype(np.uint8), 4.0, interp='nearest'))
+        cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(y, 0.0, 1.0))*255).astype(np.uint8)))
         filename = '%s/ori_img.jpg' % base_folder
-        sp.misc.imsave(filename, sp.misc.imresize((reshape_img(np.clip(ori_img, 0.0, 1.0))*255).astype(np.uint8), 4.0, interp='nearest'))
+        cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(ori_img, 0.0, 1.0))*255).astype(np.uint8)))
 
         if run_ours:
             # ours
@@ -178,9 +180,9 @@ for idx in idxs :
         filename = '%s/settings.mat' % base_folder
         sp.io.savemat(filename, info)
         filename = '%s/y.jpg' % base_folder
-        sp.misc.imsave(filename, sp.misc.imresize((reshape_img(np.clip(y, 0.0, 1.0))*255).astype(np.uint8), 4.0, interp='nearest'))
+        cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(y, 0.0, 1.0))*255).astype(np.uint8)))
         filename = '%s/ori_img.jpg' % base_folder
-        sp.misc.imsave(filename, sp.misc.imresize((reshape_img(np.clip(ori_img, 0.0, 1.0))*255).astype(np.uint8), 4.0, interp='nearest'))
+        cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(ori_img, 0.0, 1.0))*255).astype(np.uint8)))
 
         if run_ours:
             # ours
@@ -245,9 +247,9 @@ for idx in idxs :
         filename = '%s/settings.mat' % base_folder
         sp.io.savemat(filename, info)
         filename = '%s/y.jpg' % base_folder
-        sp.misc.imsave(filename, sp.misc.imresize((reshape_img(np.clip(y, 0.0, 1.0))*255).astype(np.uint8), 4.0, interp='nearest'))
+        cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(y, 0.0, 1.0))*255).astype(np.uint8)))
         filename = '%s/ori_img.jpg' % base_folder
-        sp.misc.imsave(filename, sp.misc.imresize((reshape_img(np.clip(ori_img, 0.0, 1.0))*255).astype(np.uint8), 4.0, interp='nearest'))
+        cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(ori_img, 0.0, 1.0))*255).astype(np.uint8)))
 
 
         if run_ours:
@@ -322,11 +324,11 @@ for idx in idxs :
         filename = '%s/settings.mat' % base_folder
         sp.io.savemat(filename, info)
         filename = '%s/y.jpg' % base_folder
-        sp.misc.imsave(filename, sp.misc.imresize((reshape_img(np.clip(y, 0.0, 1.0))*255).astype(np.uint8), 4.0, interp='nearest'))
+        cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(y, 0.0, 1.0))*255).astype(np.uint8)))
         filename = '%s/ori_img.jpg' % base_folder
-        sp.misc.imsave(filename, sp.misc.imresize((reshape_img(np.clip(ori_img, 0.0, 1.0))*255).astype(np.uint8), 4.0, interp='nearest'))
+        cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(ori_img, 0.0, 1.0))*255).astype(np.uint8)))
         filename = '%s/bicubic_img.jpg' % base_folder
-        sp.misc.imsave(filename, sp.misc.imresize((bicubic_img*255).astype(np.uint8), 4.0, interp='nearest'))
+        cv2.imwrite(filename, sp.misc.imresize((bicubic_img*255).astype(np.uint8)))
 
         if run_ours:
             # ours
@@ -377,7 +379,7 @@ for idx in idxs :
         filename = '%s/settings.mat' % base_folder
         sp.io.savemat(filename, info)
         filename = '%s/ori_img.jpg' % base_folder
-        sp.misc.imsave(filename, sp.misc.imresize((reshape_img(np.clip(ori_img, 0.0, 1.0))*255).astype(np.uint8), 4.0, interp='nearest'))
+        cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(ori_img, 0.0, 1.0))*255).astype(np.uint8)))
 
 
         if run_ours:
@@ -484,11 +486,11 @@ for idx in idxs :
 
 
     filename = '%s/ori_img.jpg' % result_folder
-    sp.misc.imsave(filename, sp.misc.imresize((reshape_img(np.clip(ori_img, 0.0, 1.0))*255).astype(np.uint8), 4.0, interp='nearest'))
+    cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(ori_img, 0.0, 1.0))*255).astype(np.uint8)))
 
     if run_ours:
         filename = '%s/direct_img.jpg' % result_folder
-        sp.misc.imsave(filename, sp.misc.imresize((reshape_img(np.clip(direct_img, 0.0, 1.0))*255).astype(np.uint8), 4.0, interp='nearest'))
+        cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(direct_img, 0.0, 1.0))*255).astype(np.uint8)))
 
 
     ##############################################################################################
