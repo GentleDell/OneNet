@@ -50,7 +50,7 @@ for idx in idxs :
 
     np.random.seed(idx)
 
-    img_size = (64,128,3)
+    img_size = (64,64,3)
 
     show_img_progress = False # whether the plot intermediate results (may slow down the process)
     run_ours = True           # whether the run the proposed method
@@ -58,7 +58,7 @@ for idx in idxs :
 
     def load_image(filepath):
         img = imageio.imread(filepath)
-        img = cv2.resize(img, dsize=(64,128)).astype(float) / 255.0
+        img = cv2.resize(img, dsize=(64,64)).astype(float) / 255.0
         if len(img.shape) < 3:
             img = np.tile(img, [1,1,3])
         return img
