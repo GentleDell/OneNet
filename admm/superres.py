@@ -10,7 +10,7 @@ def setup(x_shape, resize_ratio):
 
     box_size = 1.0 / resize_ratio
     if np.mod(x_shape[1], box_size) != 0 or np.mod(x_shape[2], box_size) != 0:
-        print "only support width (and height) * resize_ratio is an interger!"
+        print("only support width (and height) * resize_ratio is an interger!")
 
 
     def A_fun(x):
