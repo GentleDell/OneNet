@@ -30,7 +30,7 @@ def save_results(folder, infos, x, z, u):
 
 
 # index of test images
-idxs = np.random.randint(391854, size=1)
+idxs = np.random.randint(27, size=1)
 
 # result folder
 clean_paper_results = 'clean_paper_results' 
