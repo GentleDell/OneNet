@@ -24,11 +24,12 @@ def save_results(folder, infos, x, z, u):
     filename = '%s/infos.mat' % folder
     sp.io.savemat(filename, infos)
     filename = '%s/x.jpg' % folder
-    cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(x, 0.0, 1.0))*255).astype(np.uint8)))
+    
+    cv2.imwrite(filename, cv2.resize((reshape_img(np.clip(x, 0.0, 1.0))*255).astype(np.uint8), None,fx=1.0, fy=1.0, interpolation=cv2.INTER_NEAREST))
     filename = '%s/z.jpg' % folder
-    cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(z, 0.0, 1.0))*255).astype(np.uint8)))
+    cv2.imwrite(filename, cv2.resize((reshape_img(np.clip(z, 0.0, 1.0))*255).astype(np.uint8), None,fx=1.0, fy=1.0, interpolation=cv2.INTER_NEAREST))
     filename = '%s/u.jpg' % folder
-    cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(u, 0.0, 1.0))*255).astype(np.uint8)))
+    cv2.imwrite(filename, cv2.resize((reshape_img(np.clip(u, 0.0, 1.0))*255).astype(np.uint8), None,fx=1.0, fy=1.0, interpolation=cv2.INTER_NEAREST))
 
 
 # index of test images
@@ -49,7 +50,7 @@ for idx in idxs :
 
     np.random.seed(idx)
 
-    img_size = (64,64,3)
+    img_size = (64,128,3)
 
     show_img_progress = False # whether the plot intermediate results (may slow down the process)
     run_ours = True           # whether the run the proposed method
@@ -57,7 +58,7 @@ for idx in idxs :
 
     def load_image(filepath):
         img = imageio.imread(filepath)
-        img = sp.misc.imresize(img, [64,64]).astype(float) / 255.0
+        img = cv2.resize(img, dsize=(64,128)).astype(float) / 255.0
         if len(img.shape) < 3:
             img = np.tile(img, [1,1,3])
         return img
@@ -67,7 +68,7 @@ for idx in idxs :
         #img = sp.misc.imread(filepath)
         ## <Note> In our original code used to generate the results in the paper, we mistakenly
         ## resize the image directly to the input dimension via
-        ## img = sp.misc.imresize(img, [img_size[0], img_size[1]]).astype(float) / 255.0
+        ## img = cv2.resize(img, [img_size[0], img_size[1]]).astype(float) / 255.0
         ## The following is the corrected version
         #img_shape = img.shape
         #min_edge = min(img_shape[0], img_shape[1])
@@ -75,7 +76,7 @@ for idx in idxs :
         #max_resize_ratio = min_resize_ratio * 2.0
         #resize_ratio = np.random.rand() * (max_resize_ratio - min_resize_ratio) + min_resize_ratio
     
-        #img = sp.misc.imresize(img, resize_ratio).astype(float) / 255.0
+        #img = cv2.resize(img, resize_ratio).astype(float) / 255.0
         #crop_loc_row = np.random.randint(img.shape[0]-img_size[0]+1)
         #crop_loc_col = np.random.randint(img.shape[1]-img_size[1]+1)
         #if len(img.shape) == 3:
@@ -116,9 +117,9 @@ for idx in idxs :
         filename = '%s/settings.mat' % base_folder
         sp.io.savemat(filename, info)
         filename = '%s/y.jpg' % base_folder
-        cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(y, 0.0, 1.0))*255).astype(np.uint8)))
+        cv2.imwrite(filename, cv2.resize((reshape_img(np.clip(y, 0.0, 1.0))*255).astype(np.uint8), None,fx=1.0, fy=1.0, interpolation=cv2.INTER_NEAREST))
         filename = '%s/ori_img.jpg' % base_folder
-        cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(ori_img, 0.0, 1.0))*255).astype(np.uint8)))
+        cv2.imwrite(filename, cv2.resize((reshape_img(np.clip(ori_img, 0.0, 1.0))*255).astype(np.uint8), None,fx=1.0, fy=1.0, interpolation=cv2.INTER_NEAREST))
 
         if run_ours:
             # ours
@@ -143,7 +144,7 @@ for idx in idxs :
         z1 = reshape_img(np.clip(z, 0.0, 1.0)) 
         ori_img1 = reshape_img(np.clip(ori_img, 0.0, 1.0)) 
         psnr = 10*np.log10( 1.0 /np.linalg.norm(z1-ori_img1)**2*np.prod(z1.shape))   
-        img = Image.fromarray( sp.misc.imresize(np.uint8(z1*255), 4.0, interp='nearest' ) )
+        img = Image.fromarray( cv2.resize(np.uint8(z1*255), None,fx=1.0, fy=1.0, interpolation=cv2.INTER_NEAREST ) )
         draw = ImageDraw.Draw(img)
         #font = ImageFont.truetype(font='tnr.ttf', size=50)
         #draw.text((135, 200), "%.2f"%psnr, (255,255,255), font=font)
@@ -180,9 +181,9 @@ for idx in idxs :
         filename = '%s/settings.mat' % base_folder
         sp.io.savemat(filename, info)
         filename = '%s/y.jpg' % base_folder
-        cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(y, 0.0, 1.0))*255).astype(np.uint8)))
+        cv2.imwrite(filename, cv2.resize((reshape_img(np.clip(y, 0.0, 1.0))*255).astype(np.uint8), None,fx=1.0, fy=1.0, interpolation=cv2.INTER_NEAREST))
         filename = '%s/ori_img.jpg' % base_folder
-        cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(ori_img, 0.0, 1.0))*255).astype(np.uint8)))
+        cv2.imwrite(filename, cv2.resize((reshape_img(np.clip(ori_img, 0.0, 1.0))*255).astype(np.uint8), None,fx=1.0, fy=1.0, interpolation=cv2.INTER_NEAREST))
 
         if run_ours:
             # ours
@@ -207,7 +208,7 @@ for idx in idxs :
         z1 = reshape_img(np.clip(z, 0.0, 1.0)) 
         ori_img1 = reshape_img(np.clip(ori_img, 0.0, 1.0)) 
         psnr = 10*np.log10( 1.0 /np.linalg.norm(z1-ori_img1)**2*np.prod(z1.shape))   
-        img = Image.fromarray( sp.misc.imresize(np.uint8(z1*255), 4.0, interp='nearest' ) )
+        img = Image.fromarray( cv2.resize(np.uint8(z1*255), None,fx=1.0, fy=1.0, interpolation=cv2.INTER_NEAREST ) )
         draw = ImageDraw.Draw(img)
         #font = ImageFont.truetype(font='tnr.ttf', size=50)
         #draw.text((135, 200), "%.2f"%psnr, (255,255,255), font=font)
@@ -247,9 +248,9 @@ for idx in idxs :
         filename = '%s/settings.mat' % base_folder
         sp.io.savemat(filename, info)
         filename = '%s/y.jpg' % base_folder
-        cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(y, 0.0, 1.0))*255).astype(np.uint8)))
+        cv2.imwrite(filename, cv2.resize((reshape_img(np.clip(y, 0.0, 1.0))*255).astype(np.uint8), None,fx=1.0, fy=1.0, interpolation=cv2.INTER_NEAREST))
         filename = '%s/ori_img.jpg' % base_folder
-        cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(ori_img, 0.0, 1.0))*255).astype(np.uint8)))
+        cv2.imwrite(filename, cv2.resize((reshape_img(np.clip(ori_img, 0.0, 1.0))*255).astype(np.uint8), None,fx=1.0, fy=1.0, interpolation=cv2.INTER_NEAREST))
 
 
         if run_ours:
@@ -275,7 +276,7 @@ for idx in idxs :
         z1 = reshape_img(np.clip(z, 0.0, 1.0)) 
         ori_img1 = reshape_img(np.clip(ori_img, 0.0, 1.0)) 
         psnr = 10*np.log10( 1.0 /np.linalg.norm(z1-ori_img1)**2*np.prod(z1.shape))   
-        img = Image.fromarray( sp.misc.imresize(np.uint8(z1*255), 4.0, interp='nearest' ) )
+        img = Image.fromarray( cv2.resize(np.uint8(z1*255), None,fx=1.0, fy=1.0, interpolation=cv2.INTER_NEAREST ) )
         draw = ImageDraw.Draw(img)
         #font = ImageFont.truetype(font='tnr.ttf', size=50)
         #draw.text((135, 200), "%.2f"%psnr, (255,255,255), font=font)
@@ -291,7 +292,7 @@ for idx in idxs :
         (A_fun, AT_fun) = problem.setup(x_shape, resize_ratio=resize_ratio)
         y, noise = add_noise.exe(A_fun(ori_img), noise_mean=noise_mean, noise_std=noise_std)
 
-        bicubic_img = sp.misc.imresize(y[0], [ori_img.shape[1], ori_img.shape[2]], interp='bicubic')
+        bicubic_img = cv2.resize(y[0], dsize = [ori_img.shape[1], ori_img.shape[2]], interpolation=cv2.INTER_CUBIC)
         if show_img_progress:
             fig = plt.figure('superres')
             plt.gcf().clear()
@@ -324,11 +325,11 @@ for idx in idxs :
         filename = '%s/settings.mat' % base_folder
         sp.io.savemat(filename, info)
         filename = '%s/y.jpg' % base_folder
-        cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(y, 0.0, 1.0))*255).astype(np.uint8)))
+        cv2.imwrite(filename, cv2.resize((reshape_img(np.clip(y, 0.0, 1.0))*255).astype(np.uint8), None,fx=1.0, fy=1.0, interpolation=cv2.INTER_NEAREST))
         filename = '%s/ori_img.jpg' % base_folder
-        cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(ori_img, 0.0, 1.0))*255).astype(np.uint8)))
+        cv2.imwrite(filename, cv2.resize((reshape_img(np.clip(ori_img, 0.0, 1.0))*255).astype(np.uint8), None,fx=1.0, fy=1.0, interpolation=cv2.INTER_NEAREST))
         filename = '%s/bicubic_img.jpg' % base_folder
-        cv2.imwrite(filename, sp.misc.imresize((bicubic_img*255).astype(np.uint8)))
+        cv2.imwrite(filename, cv2.resize((bicubic_img*255).astype(np.uint8), None,fx=1.0, fy=1.0, interpolation=cv2.INTER_NEAREST))
 
         if run_ours:
             # ours
@@ -353,7 +354,7 @@ for idx in idxs :
         z1 = reshape_img(np.clip(z, 0.0, 1.0)) 
         ori_img1 = reshape_img(np.clip(ori_img, 0.0, 1.0)) 
         psnr = 10*np.log10( 1.0 /np.linalg.norm(z1-ori_img1)**2*np.prod(z1.shape))   
-        img = Image.fromarray( sp.misc.imresize(np.uint8(z1*255), 4.0, interp='nearest' ) )
+        img = Image.fromarray( cv2.resize(np.uint8(z1*255), None,fx=1.0, fy=1.0, interpolation=cv2.INTER_NEAREST ) )
         draw = ImageDraw.Draw(img)
         #font = ImageFont.truetype(font='tnr.ttf', size=50)
         #draw.text((135, 200), "%.2f"%psnr, (255,255,255), font=font)
@@ -379,7 +380,7 @@ for idx in idxs :
         filename = '%s/settings.mat' % base_folder
         sp.io.savemat(filename, info)
         filename = '%s/ori_img.jpg' % base_folder
-        cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(ori_img, 0.0, 1.0))*255).astype(np.uint8)))
+        cv2.imwrite(filename, cv2.resize((reshape_img(np.clip(ori_img, 0.0, 1.0))*255).astype(np.uint8), None,fx=1.0, fy=1.0, interpolation=cv2.INTER_NEAREST))
 
 
         if run_ours:
@@ -405,7 +406,7 @@ for idx in idxs :
         z1 = reshape_img(np.clip(z, 0.0, 1.0)) 
         ori_img1 = reshape_img(np.clip(ori_img, 0.0, 1.0)) 
         psnr = 10*np.log10( 1.0 /np.linalg.norm(z1-ori_img1)**2*np.prod(z1.shape))   
-        img = Image.fromarray( sp.misc.imresize(np.uint8(z1*255), 4.0, interp='nearest' ) )
+        img = Image.fromarray( cv2.resize(np.uint8(z1*255), None,fx=1.0, fy=1.0, interpolation=cv2.INTER_NEAREST ) )
         draw = ImageDraw.Draw(img)
         #font = ImageFont.truetype(font='tnr.ttf', size=50)
         #draw.text((135, 200), "%.2f"%psnr, (255,255,255), font=font)
@@ -486,11 +487,11 @@ for idx in idxs :
 
 
     filename = '%s/ori_img.jpg' % result_folder
-    cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(ori_img, 0.0, 1.0))*255).astype(np.uint8)))
+    cv2.imwrite(filename, cv2.resize((reshape_img(np.clip(ori_img, 0.0, 1.0))*255).astype(np.uint8), None,fx=1.0, fy=1.0, interpolation=cv2.INTER_NEAREST))
 
     if run_ours:
         filename = '%s/direct_img.jpg' % result_folder
-        cv2.imwrite(filename, sp.misc.imresize((reshape_img(np.clip(direct_img, 0.0, 1.0))*255).astype(np.uint8)))
+        cv2.imwrite(filename, cv2.resize((reshape_img(np.clip(direct_img, 0.0, 1.0))*255).astype(np.uint8), None,fx=1.0, fy=1.0, interpolation=cv2.INTER_NEAREST))
 
 
     ##############################################################################################
