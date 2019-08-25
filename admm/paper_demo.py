@@ -292,7 +292,7 @@ for idx in idxs :
         (A_fun, AT_fun) = problem.setup(x_shape, resize_ratio=resize_ratio)
         y, noise = add_noise.exe(A_fun(ori_img), noise_mean=noise_mean, noise_std=noise_std)
 
-        bicubic_img = cv2.resize(y[0], dsize = [ori_img.shape[1], ori_img.shape[2]], interpolation=cv2.INTER_CUBIC)
+        bicubic_img = cv2.resize(y[0], dsize = (ori_img.shape[1], ori_img.shape[2]), interpolation=cv2.INTER_CUBIC)
         if show_img_progress:
             fig = plt.figure('superres')
             plt.gcf().clear()
