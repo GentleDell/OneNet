@@ -12,7 +12,7 @@ import pickle
 # In the folder, there should be three subfolders: "train", "valid", "test", each containing
 # the training images, validation images, and test images, respectively.
 # Note that these images can also be contained in subfolders.
-dataset_base_path = os.path.expanduser("~/datasets/celeb-1m")
+dataset_base_path = os.path.expanduser("../datasets/celeb-1m")
 
 
 trainset_path = dataset_base_path + '/' + 'train'

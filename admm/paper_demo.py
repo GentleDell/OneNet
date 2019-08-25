@@ -37,7 +37,7 @@ clean_paper_results = 'clean_paper_results'
 
 # filename of the trained model. If using virtual batch normalization, 
 # the popmean and popvariance need to be updated first via update_popmean.py!
-iter = 49999
+iter = 9999
 pretrained_folder = os.path.expanduser("../model/celeb-1m/imsize64_ratio0.010000_dis0.005000_latent0.000100_img0.001000_de1.000000_derate1.000000_dp1_gd1_softpos0.850000_wdcy_0.000001_seed0")
 pretrained_model_file = '%s/update/model_iter-%d' % (pretrained_folder, iter)
 
